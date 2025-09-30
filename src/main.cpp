@@ -17,11 +17,18 @@ void setup() {
 
 void loop() {
   int maLectureAnalogique = analogRead(MA_BROCHE_ANGLE);
-  int maLectureBouton = digitalRead( MA_BROCHE_BOUTON );
-  pixelAtom = CRGB(0,millis() % 255,0);
+  //int maLectureBouton = digitalRead( MA_BROCHE_BOUTON );
+
+  if (maLectureAnalogique < 4095 / 3) {
+    pixelAtom = CRGB(0,0,255);
+  } else if (maLectureAnalogique > 4095 / 3 && maLectureAnalogique < 4095 /3 * 2) {
+    pixelAtom = CRGB(0,255,0);
+  } else {
+    pixelAtom = CRGB(255,0,0);
+  }
   FastLED.show();
-  monOsc.sendInt( "/bouton" , maLectureBouton);
-  monOsc.sendInt( "/analog" , maLectureAnalogique);
+  //monOsc.sendInt( "/bouton" , maLectureBouton);
+  monOsc.sendInt( "/light" , maLectureAnalogique);
   delay(100);
 
 }
